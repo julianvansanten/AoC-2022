@@ -35,6 +35,8 @@ makeSolutionsCollector :: IO ()
 makeSolutionsCollector = do
     writeFile "./src/SolutionsCollector.hs" "module SolutionsCollector (getSolutions) where\n\n\n"
     mapM_ (\x -> appendFile "./src/SolutionsCollector.hs" ("import Day" ++ show x ++ "\n")) [1..31]
-    appendFile "./src/SolutionsCollector.hs" "\n\ngetSolutions :: [(String -> String, String -> String)]\ngetSolutions = [\n"
+    appendFile "./src/SolutionsCollector.hs" "\n\n-- | List of all solutions for each day"
+    appendFile "./src/SolutionsCollector.hs" "\ngetSolutions :: [(String -> String, String -> String)]\ngetSolutions = [\n"
     mapM_ (\x -> appendFile "./src/SolutionsCollector.hs" ("\tDay" ++ show x ++ ".getSolutions, \n")) [1..30]
-    appendFile "./src/SolutionsCollector.hs" ("\tDay" ++ show 31 ++ ".getSolutions\n\t]\n\n")
+    appendFile "./src/SolutionsCollector.hs" ("\tDay" ++ show 31 ++ ".getSolutions\n\t]\n\n\n")
+    appendFile "./src/SolutionsCollector.hs" "-- | Get solutions for a given day\ngetDay :: Int -> (String -> String, String -> String)\ngetDay x = getSolutions !! (x - 1)\n\n"
