@@ -19,7 +19,7 @@ makeFolders = mapM_ (\x -> createDirectoryIfMissing True ("./src/Day" ++ show x)
 
 -- Fill each folder with a DayX.hs file
 makeDayFiles :: IO ()
-makeDayFiles = mapM_ (\x -> writeFile ("./src/Day" ++ show x ++ "/Day" ++ show x ++ ".hs") ("module Day" ++ show x ++ " (getSolutions) where\n\n\n")) [1..31]
+makeDayFiles = mapM_ (\x -> writeFile ("./src/Day" ++ show x ++ "/Day" ++ show x ++ ".hs") ("module Day" ++ show x ++ ".Day" ++ show x ++ " (getSolutions) where\n\n\n")) [1..31]
 
 -- Fill each DayX.hs file with a getSolutions function that returns a tuple with two functions from String to String
 makeGetSolutions :: IO ()
