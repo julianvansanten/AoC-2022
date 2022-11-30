@@ -19,11 +19,11 @@ makeFolders = mapM_ (\x -> createDirectoryIfMissing True ("./src/Day" ++ show x)
 
 -- Fill each folder with a DayX.hs file
 makeDayFiles :: IO ()
-makeDayFiles = mapM_ (\x -> writeFile ("./src/Day" ++ show x ++ "/Day" ++ show x ++ ".hs") ("module Day" ++ show x ++ ".Day" ++ show x ++ " (getSolutions) where\n\n\n")) [1..31]
+makeDayFiles = mapM_ (\x -> writeFile ("./src/Day" ++ show x ++ "/Day" ++ show x ++ ".hs") ("module Day" ++ show x ++ ".Day" ++ show x ++ " (getDaySolutions) where\n\n\n")) [1..31]
 
 -- Fill each DayX.hs file with a getSolutions function that returns a tuple with two functions from String to String
 makeGetSolutions :: IO ()
-makeGetSolutions = mapM_ (\x -> appendFile ("./src/Day" ++ show x ++ "/Day" ++ show x ++ ".hs") ("getSolutions :: (String -> String, String -> String)\ngetSolutions = (solve1, solve2)\n\n\n")) [1..31]
+makeGetSolutions = mapM_ (\x -> appendFile ("./src/Day" ++ show x ++ "/Day" ++ show x ++ ".hs") ("getDaySolutions :: (String -> String, String -> String)\ngetDaySolutions = (solve1, solve2)\n\n\n")) [1..31]
 
 makeSolves :: IO ()
 makeSolves = mapM_ (\x -> appendFile ("./src/Day" ++ show x ++ "/Day" ++ show x ++ ".hs") 
@@ -34,9 +34,9 @@ makeSolves = mapM_ (\x -> appendFile ("./src/Day" ++ show x ++ "/Day" ++ show x 
 makeSolutionsCollector :: IO ()
 makeSolutionsCollector = do
     writeFile "./src/SolutionsCollector.hs" "module SolutionsCollector (getSolutions) where\n\n\n"
-    mapM_ (\x -> appendFile "./src/SolutionsCollector.hs" ("import Day" ++ show x ++ "\n")) [1..31]
+    mapM_ (\x -> appendFile "./src/SolutionsCollector.hs" ("import Day" ++ show x ++ ".Day" ++ show x ++ " as Day" ++ show x ++ "\n")) [1..31]
     appendFile "./src/SolutionsCollector.hs" "\n\n-- | List of all solutions for each day"
     appendFile "./src/SolutionsCollector.hs" "\ngetSolutions :: [(String -> String, String -> String)]\ngetSolutions = [\n"
-    mapM_ (\x -> appendFile "./src/SolutionsCollector.hs" ("\tDay" ++ show x ++ ".getSolutions, \n")) [1..30]
-    appendFile "./src/SolutionsCollector.hs" ("\tDay" ++ show 31 ++ ".getSolutions\n\t]\n\n\n")
+    mapM_ (\x -> appendFile "./src/SolutionsCollector.hs" ("    Day" ++ show x ++ ".getDaySolutions, \n")) [1..30]
+    appendFile "./src/SolutionsCollector.hs" ("    Day" ++ show 31 ++ ".getDaySolutions\n    ]\n\n\n")
     appendFile "./src/SolutionsCollector.hs" "-- | Get solutions for a given day\ngetDay :: Int -> (String -> String, String -> String)\ngetDay x = getSolutions !! (x - 1)\n\n"
