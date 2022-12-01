@@ -1,4 +1,4 @@
-module SolutionsCollector (getSolutions) where
+module SolutionsCollector (getSolutions, getDay) where
 
 
 import Day1.Day1 as Day1

@@ -1,5 +1,33 @@
 module Main (main) where
 
 
+import System.Environment (getArgs)
+import SolutionsCollector (getDay)
+
+-- | Main function
 main :: IO ()
-main = putStrLn "This is just a preparation for when advent of code comes around"
+main = do
+    day <- getDayFromArgs
+    filepath <- getInputFilePathFromArgs
+
+
+-- | If the day is the first program argument, return it. Otherwise, ask the user for a day and return the integer value of the day
+getDayFromArgs :: IO Int
+getDayFromArgs = do
+    args <- getArgs
+    case args of
+        [] -> do
+            putStrLn "Please enter a day: "
+            read <$> getLine
+        (day:_) -> return $ read day
+
+
+-- | If the file path is the second program argument, return it. Otherwise, ask the user for a file path to the input and return it as a filepath
+getInputFilePathFromArgs :: IO FilePath
+getInputFilePathFromArgs = do
+    args <- getArgs
+    if length args > 1 then
+        return $ args !! 1
+    else do
+        putStrLn "Please enter the path to the input file: "
+        getLine
