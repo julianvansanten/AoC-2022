@@ -33,7 +33,7 @@ makeSolves = mapM_ (\x -> appendFile ("./src/Day" ++ show x ++ "/Day" ++ show x 
 -- Make a SolutionsCollector.hs file that takes all the getSolutions functions from each module DayX/DayX.hs and puts them in a list
 makeSolutionsCollector :: IO ()
 makeSolutionsCollector = do
-    writeFile "./src/SolutionsCollector.hs" "module SolutionsCollector (getSolutions) where\n\n\n"
+    writeFile "./src/SolutionsCollector.hs" "module SolutionsCollector (getSolutions, getDay) where\n\n\n"
     mapM_ (\x -> appendFile "./src/SolutionsCollector.hs" ("import Day" ++ show x ++ ".Day" ++ show x ++ " as Day" ++ show x ++ "\n")) [1..31]
     appendFile "./src/SolutionsCollector.hs" "\n\n-- | List of all solutions for each day"
     appendFile "./src/SolutionsCollector.hs" "\ngetSolutions :: [(String -> String, String -> String)]\ngetSolutions = [\n"
