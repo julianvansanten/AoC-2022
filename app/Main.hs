@@ -9,6 +9,12 @@ main :: IO ()
 main = do
     day <- getDayFromArgs
     filepath <- getInputFilePathFromArgs
+    let (solve1, solve2) = getDay day
+    input <- readFile filepath
+    putStrLn "Solution of the first question:"
+    print $ solve1 input
+    putStrLn "Solution of the second question:"
+    print $ solve2 input
 
 
 -- | If the day is the first program argument, return it. Otherwise, ask the user for a day and return the integer value of the day
