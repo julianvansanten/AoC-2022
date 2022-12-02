@@ -37,6 +37,8 @@ library
       Day18.Day18
       Day19.Day19
       Day2.Day2
+      Day2.EDSL
+      Day2.Parser
       Day20.Day20
       Day21.Day21
       Day22.Day22
