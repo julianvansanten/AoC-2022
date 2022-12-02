@@ -1,8 +1,8 @@
-module Day2.EDSL (Draw, Game) where
+module Day2.EDSL where
 
 
-newtype Draw = Rock | Paper | Scissors
+data Draw = Rock | Paper | Scissors
     deriving (Show, Eq)
 
-newtype Game = Game Draw Draw
+data Game = Game Draw Draw
     deriving (Show, Eq)
