@@ -1,6 +1,6 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.34.4.
+-- This file has been generated from package.yaml by hpack version 0.35.0.
 --
 -- see: https://github.com/sol/hpack
 
@@ -37,6 +37,7 @@ library
       Day18.Day18
       Day19.Day19
       Day2.Day2
+      Day2.EDSL
       Day20.Day20
       Day21.Day21
       Day22.Day22
