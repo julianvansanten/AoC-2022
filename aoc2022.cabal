@@ -39,6 +39,7 @@ library
       Day2.Day2
       Day2.EDSL
       Day2.Parser
+      Day2.PointLogic
       Day20.Day20
       Day21.Day21
       Day22.Day22

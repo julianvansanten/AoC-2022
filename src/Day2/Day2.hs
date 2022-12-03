@@ -1,33 +1,32 @@
 module Day2.Day2 (getDaySolutions) where
 
 
-import Text.ParserCombinators.Parsec
+import Day2.EDSL
+import Day2.Parser
+import Day2.PointLogic (calculateTotalPoints)
 
-import Day2.EDSL as E
 
 getDaySolutions :: (String -> String, String -> String)
 getDaySolutions = (solve1, solve2)
 
 
 solve1 :: String -> String
-solve1 = error "First solution of day 2 not implemented yet!"
+solve1 = show . calculateTotalPoints . getGames1
 
 solve2 :: String -> String
-solve2 = error "Second solution of day 2 not implemented yet!"
+solve2 = show . calculateTotalPoints . getGames2
 
 
-calculatePoints :: Game -> Int
-calculatePoints game = calculateGameResult game + calculateDrawScore game
+getGames1 :: String -> Games1
+getGames1 str = do
+    let x = runGames1 str
+    case x of
+        (Left err) -> error $ show err 
+        (Right games) -> games
 
-
-calculateGameResult (E.Game opponent me) | opponent == me = 3
-                                    | opponent == Rock = if me == Paper then 6 else 0
-                                    | opponent == Paper = if me == Scissors then 6 else 0
-                                    | opponent == Scissors = if me == Rock then 6 else 0
-
-
--- | Calculate the points gained from the chosen move
-calculateDrawScore (E.Game _ me) | me == Rock = 1
-                            | me == Paper = 2
-                            | me == Scissors = 3
-                            | otherwise = error "Undefined draw!"
+getGames2 :: String -> Games2
+getGames2 str = do
+    let x = runGames2 str
+    case x of
+        Left pe -> error $ show pe
+        Right ga -> ga
