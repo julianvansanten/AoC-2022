@@ -1,7 +1,7 @@
 module Day1.Day1 (getDaySolutions) where
 
 
-import Data.List (sort, reverse)
+import Data.List (sort)
 import Data.List.Split (splitOn)
 
 
