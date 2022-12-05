@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wincomplete-patterns #-}
 module Day2.PointLogic (
     calculateTotalPoints
 ) where
