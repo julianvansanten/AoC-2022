@@ -1,24 +1,9 @@
 module Day4.Solution1 (
-    run1
+    countContainedPairs
 ) where
 
 
-import Day4.Parser
 import Day4.EDSL
-
-
--- | Find the solution
-run1 :: String -> Int
-run1 = countContainedPairs . getPairs
-
-
--- | Get the parsed Pairs, if parseError just error the program
-getPairs :: String -> Pairs
-getPairs str = do
-    let res = parseStr str
-    case res of
-        (Left err) -> error $ show err
-        (Right pairs) -> pairs
 
 
 -- | Get the count of how many tasks are contained

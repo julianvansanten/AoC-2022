@@ -18,7 +18,7 @@ solve2 = show . getTopThree
 
 -- | Get the weights of all Calories carried by each elf.
 getWeights :: String -> [Int]
-getWeights str = map (sum . (map read . lines)) $ splitOn "\n\n" str
+getWeights = map (sum . (map read . lines)) . splitOn "\n\n"
 
 
 -- | Get the total weight of the top three elves

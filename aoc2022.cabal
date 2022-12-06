@@ -59,6 +59,7 @@ library
       Day4.EDSL
       Day4.Parser
       Day4.Solution1
+      Day4.Solution2
       Day5.Day5
       Day6.Day6
       Day7.Day7
