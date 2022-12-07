@@ -60,10 +60,10 @@ library
       Day4.Parser
       Day4.Solution1
       Day4.Solution2
+      Day5.Converter
       Day5.CrateLogic
       Day5.Day5
       Day5.EDSL
-      Day5.MatrixLogic
       Day5.Parser
       Day6.Day6
       Day7.Day7
