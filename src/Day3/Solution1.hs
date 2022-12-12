@@ -5,7 +5,7 @@ module Day3.Solution1
     ) where
 
 
-import Data.Char (ord)
+import Data.Char (ord, isAsciiLower, isAsciiUpper)
 import Data.List (intersect)
 
 
@@ -15,8 +15,8 @@ import Data.List (intersect)
     Uppercase item types A through Z have priorities 27 through 52.
 -}
 getPriority :: Char -> Int
-getPriority c | c >= 'a' && c <= 'z' = ord c - 96
-        | c >= 'A' && c <= 'Z' = ord c - 38
+getPriority c | isAsciiLower c = ord c - 96
+        | isAsciiUpper c = ord c - 38
         | otherwise = -1
 
 
@@ -41,4 +41,4 @@ getIntersect = firstIntersect . equalSplit
 
 -- | Convert input to the total priority count
 getPriorities1 :: String -> Int
-getPriorities1 str = sum $ map getIntersect $ map (map getPriority) $ lines str
+getPriorities1 str = sum $ map (getIntersect . map getPriority) $ lines str
