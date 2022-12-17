@@ -15,7 +15,7 @@ getIntersectList :: (Eq a) => [[a]] -> [a]
 getIntersectList [] = []
 getIntersectList [_] = []
 getIntersectList [_, _] = []
-getIntersectList (xs:ys:zs:res) = [findFirstIntersect xs ys zs] ++ getIntersectList res
+getIntersectList (xs:ys:zs:res) = findFirstIntersect xs ys zs : getIntersectList res
 
 
 -- | Find the first element that is an intersection of three lists
