@@ -1,15 +1,25 @@
-{-# OPTIONS_GHC -Wmissing-signatures #-}
-module Day5.Parser (runElvenCrates) where
+module Day5.Parser (parseFile) where
 
 
-import Text.Parsec.String (Parser)
-import Text.Parsec.Language
-
-import Control.Monad (void)
+import Data.List (transpose, isInfixOf, intercalate)
+import Data.Char (isLetter)
 
 import Day5.EDSL
-import Text.Parsec
+
+import Text.Parsec.String
+import Text.Parsec.Language
 import qualified Text.Parsec.Token as Token
+import Text.Parsec ( sepBy1, parse, char )
+
+
+-- | Parse the stacks
+stacks :: String -> [Stack]
+stacks = convert . filter ("" /=) . map (reverse . filter isLetter) . transpose . filter ('[' `elem`) . lines
+
+
+-- | Convert an array of strings into an array of Stacks
+convert :: [String] -> [Stack]
+convert = map (Stack . map Crate)
 
 
 languageDef = emptyDef {
@@ -22,82 +32,42 @@ languageDef = emptyDef {
 
 lexer = Token.makeTokenParser languageDef
 
+
+int = fromIntegral <$> Token.integer lexer
+
 reserved = Token.reserved lexer
-brackets = Token.brackets lexer
-integer = Token.integer lexer
 
 
--- | Convert any integral to Int
-toInt :: (Integral a) => a -> Int
-toInt = fromIntegral
-
-
--- | Int parser
-int :: Parser Int
-int = toInt <$> integer
-
-
--- | Parse a single crate with a character in it
-charCrate :: Parser Crate
-charCrate = Crate <$> brackets letter
-
-
--- | Parse a slot with no crate
-emptyCrate :: Parser Crate
-emptyCrate = EmptyCrate <$ count 3 (char ' ')
-
-
--- | Parse a crate or an empty slot
-crate :: Parser Crate
-crate = charCrate <|> emptyCrate
-
-
--- | Parse a line of crates
-crateLine :: Parser [Crate]
-crateLine = sepBy1 crate (char ' ')
-
-
--- | Parse all rows of crates
-crateMatrix :: Parser [[Crate]]
-crateMatrix = sepEndBy1 crateLine newline
-
-
--- | Ignore the index list
-indexList :: Parser ()
-indexList = void $ many (space <|> digit)
-
-
-
--- | Parse a move
 move :: Parser Move
 move = do
     reserved "move"
     c <- int
     reserved "from"
-    from <- int
+    from <- (\x -> x - 1) <$> int
     reserved "to"
-    Move c from <$> int
+    Move c from . (\x -> x - 1) <$> int
 
 
--- | Parse all moves and put them in a list
 moves :: Parser [Move]
-moves = sepEndBy1 move newline
+moves = sepBy1 move (char ',')
 
 
--- | Parse the entire elven crates
-elvenCrates :: Parser ElvenCrates
-elvenCrates = do
-    matrix <- crateMatrix
-    indexList
-    ElvenCrates matrix <$> moves
+-- | Filter all strings that do not contain the keyword "move"
+filterMoves :: String -> String
+filterMoves = intercalate "," . filter (isInfixOf "move") . lines
 
 
-{- | Run the parser ElvenCrate and return the result as a string
-    If the result is a ParseError, just error the entire program
--}
-runElvenCrates :: String -> ElvenCrates
-runElvenCrates str = do
-    let res = parse elvenCrates "" str
+-- | Run the parser
+runMoves :: String -> [Move]
+runMoves str = do
+    let res = parse moves "" str
     case res of
         Left pe -> error $ show pe
-        Right ec -> ec
+        Right mos -> mos
+
+
+parseFile :: String -> ([Stack], [Move])
+parseFile str = (sts, mvs)
+    where
+        sts = stacks str
+        mvs = runMoves (filterMoves str)

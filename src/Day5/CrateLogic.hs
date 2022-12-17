@@ -5,16 +5,14 @@ module Day5.CrateLogic (
 ) where
 
 
-import Day5.EDSL ( Move(..), Crate(..) )
-
-
-newtype Stack = Stack [Crate]
-    deriving (Eq, Show)
+import Day5.EDSL ( Move(..), Crate(..), Stack(..))
+import Data.List (intercalate)
+import Debug.Trace (trace)
 
 
 -- | Get the characters at the top of each stack
 getTopChars :: [Stack] -> String
-getTopChars = map getTopChar
+getTopChars = map getTopChar 
 
 
 -- | Get the character at the top of a stack
@@ -34,39 +32,44 @@ filterEmpty (Stack cs) = Stack $ filter (EmptyCrate /=) cs
 
 
 -- | Take in a Move, a Stack and return the resulting Stack in combination with the crates that were removed.
-pickFromStack :: Move -> Stack -> (Stack, [Crate])
-pickFromStack (Move c _ _) (Stack cs) = (Stack rs, rest)
+pickFromStack :: ([Crate] -> [Crate]) -> Move -> Stack -> (Stack, [Crate])
+pickFromStack order (Move c _ _) (Stack cs) = (Stack rs, rest)
     where
         rs = take (length cs - c) cs
-        rest = take c (reverse cs)
+        rest = order $ take c (reverse cs)
 
 
 -- | Add a list of crates to the end of a stack
 addToStack :: [Crate] -> Stack -> Stack
-addToStack cs (Stack ss) = Stack $ cs ++ ss
+addToStack cs (Stack ss) = Stack $ ss ++ cs
 
 
 -- | Replace a stack at a given index
 replaceStack :: Int -> Stack -> [Stack] -> [Stack]
-replaceStack i st oldStack = fst ++ st : snd
+replaceStack i st oldStack = f ++ st : s
     where
         -- TODO find out if this is a bad thing
-        (fst, _:snd) = splitAt i oldStack
+        (f, _:s) = splitAt i oldStack
 
 
 {-  | Execute a given move in a list of stacks
     | Use with `foldr executeMove beginStack listOfMoves`
 -}
-executeMove :: Move -> [Stack] -> [Stack]
-executeMove m@(Move _ f s) st = replaceStack s newToStack fromStack
+executeMove :: ([Crate] -> [Crate]) -> [Stack] -> Move -> [Stack]
+executeMove order st m | trace ("executeMove: st=" ++ prettyStacks st ++ "\nm=" ++ show m ++ "\n\n") False = undefined
+executeMove order st m@(Move _ f s) = replaceStack s newToStack fromStack
     where
         oldFromStack = st !! f
-        (newFromStack, removed) = pickFromStack m oldFromStack
+        (newFromStack, removed) = pickFromStack order m oldFromStack
         oldToStack = st !! s
         newToStack = addToStack removed oldToStack
         fromStack = replaceStack f newFromStack st
 
 
 -- | Execute a list of moves on a collection of stacks
-executeMoves :: [Move] -> [Stack] -> [Stack]
-executeMoves mvs st = foldr executeMove st mvs
+executeMoves :: ([Crate] -> [Crate]) -> [Move] -> [Stack] -> [Stack]
+executeMoves order mvs st = foldl (executeMove order) st mvs
+
+
+prettyStacks :: Show a => [a] -> [Char]
+prettyStacks sts = intercalate "\n" (map show sts)
