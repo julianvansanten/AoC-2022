@@ -137,6 +137,7 @@ test-suite aoc2022-test
       QuickCheck
     , aoc2022
     , base >=4.7 && <5
+    , hspec
     , parsec
     , split >=0.2.3.5
   default-language: Haskell2010
