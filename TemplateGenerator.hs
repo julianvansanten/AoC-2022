@@ -64,6 +64,6 @@ makeSpec = mapM_ (\x -> appendFile ("./test/Day" ++ show x ++ "/Day" ++ show x +
 
 makeIndividualTests :: IO ()
 makeIndividualTests = mapM_ (\x -> appendFile ("./test/Day" ++ show x ++ "/Day" ++ show x ++ "Spec.hs") 
-        ("test1 :: Spec\nsolve1 = describe \"solve1\" $ do\n    it \"no test for day " 
-        ++ show x ++ " implemented yet!\" True\n\ntest2 :: Spec\nsolve2 = describe \"solve2\" $ do\n    it \"no test for day " 
+        ("test1 :: Spec\ntest1 = describe \"solve1\" $ do\n    it \"no test for day " 
+        ++ show x ++ " implemented yet!\" True\n\ntest2 :: Spec\ntest2 = describe \"solve2\" $ do\n    it \"no test for day " 
         ++ show x ++ " implemented yet!\" True")) [1..31]
