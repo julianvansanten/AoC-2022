@@ -11,6 +11,10 @@ main = do
     makeGetSolutions
     makeSolves
     makeSolutionsCollector
+    makeTestFolders
+    makeDayTestFiles
+    makeSpec
+    makeIndividualTests
 
 
 -- Make 31 folders for each day of the week
@@ -40,3 +44,26 @@ makeSolutionsCollector = do
     mapM_ (\x -> appendFile "./src/SolutionsCollector.hs" ("    Day" ++ show x ++ ".getDaySolutions, \n")) [1..30]
     appendFile "./src/SolutionsCollector.hs" ("    Day" ++ show 31 ++ ".getDaySolutions\n    ]\n\n\n")
     appendFile "./src/SolutionsCollector.hs" "-- | Get solutions for a given day\ngetDay :: Int -> (String -> String, String -> String)\ngetDay x = getSolutions !! (x - 1)\n\n"
+
+
+-- Make 31 test folders for each day of the week
+makeTestFolders :: IO ()
+makeTestFolders = mapM_ (\x -> createDirectoryIfMissing True ("./test/Day" ++ show x)) [1..31]
+
+
+-- Fill each folder with a DayX.hs file
+makeDayTestFiles :: IO ()
+makeDayTestFiles = mapM_ (\x -> writeFile ("./test/Day" ++ show x ++ "/Day" ++ show x ++ "Spec.hs") ("module Day" ++ show x ++ ".Day" ++ show x ++ "Spec where\n\n\n")) [1..31]
+
+
+makeSpec :: IO ()
+makeSpec = mapM_ (\x -> appendFile ("./test/Day" ++ show x ++ "/Day" ++ show x ++ "Spec.hs")
+        "import Test.Hspec ( Spec, describe, it )\n\n\nspec :: Spec\nspec = do\n    test1\n    test2\n\n\n"
+    ) [1..31]
+
+
+makeIndividualTests :: IO ()
+makeIndividualTests = mapM_ (\x -> appendFile ("./test/Day" ++ show x ++ "/Day" ++ show x ++ "Spec.hs") 
+        ("test1 :: Spec\nsolve1 = describe \"solve1\" $ do\n    it \"no test for day " 
+        ++ show x ++ " implemented yet!\" True\n\ntest2 :: Spec\nsolve2 = describe \"solve2\" $ do\n    it \"no test for day " 
+        ++ show x ++ " implemented yet!\" True")) [1..31]
