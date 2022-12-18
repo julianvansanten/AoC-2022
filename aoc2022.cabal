@@ -66,6 +66,8 @@ library
       Day5.Parser
       Day6.Day6
       Day7.Day7
+      Day7.EDSL
+      Day7.Evaluator
       Day8.Day8
       Day9.Day9
       SolutionsCollector
