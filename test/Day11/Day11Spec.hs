@@ -11,9 +11,9 @@ spec = do
 
 
 test1 :: Spec
-solve1 = describe "solve1" $ do
+test1 = describe "solve1" $ do
     it "no test for day 11 implemented yet!" True
 
 test2 :: Spec
-solve2 = describe "solve2" $ do
+test2 = describe "solve2" $ do
     it "no test for day 11 implemented yet!" True
