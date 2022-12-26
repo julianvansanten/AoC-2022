@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wincomplete-uni-patterns #-}
+
 module Day5.CrateLogic (
     Stack(..),
     executeMoves,
@@ -6,8 +8,6 @@ module Day5.CrateLogic (
 
 
 import Day5.EDSL ( Move(..), Crate(..), Stack(..))
-import Data.List (intercalate)
-import Debug.Trace (trace)
 
 
 -- | Get the characters at the top of each stack
@@ -24,11 +24,6 @@ getTopChar (Stack cs) = getCrateChar $ last cs
 getCrateChar :: Crate -> Char
 getCrateChar (Crate a) = a
 getCrateChar EmptyCrate = error "An empty crate is at the top, although there should not be any empty crates in the stack!"
-
-
--- | Filter empty crates from the stack
-filterEmpty :: Stack -> Stack
-filterEmpty (Stack cs) = Stack $ filter (EmptyCrate /=) cs
 
 
 -- | Take in a Move, a Stack and return the resulting Stack in combination with the crates that were removed.
@@ -56,7 +51,6 @@ replaceStack i st oldStack = f ++ st : s
     | Use with `foldr executeMove beginStack listOfMoves`
 -}
 executeMove :: ([Crate] -> [Crate]) -> [Stack] -> Move -> [Stack]
-executeMove order st m | trace ("executeMove: st=" ++ prettyStacks st ++ "\nm=" ++ show m ++ "\n\n") False = undefined
 executeMove order st m@(Move _ f s) = replaceStack s newToStack fromStack
     where
         oldFromStack = st !! f
@@ -69,7 +63,3 @@ executeMove order st m@(Move _ f s) = replaceStack s newToStack fromStack
 -- | Execute a list of moves on a collection of stacks
 executeMoves :: ([Crate] -> [Crate]) -> [Move] -> [Stack] -> [Stack]
 executeMoves order mvs st = foldl (executeMove order) st mvs
-
-
-prettyStacks :: Show a => [a] -> [Char]
-prettyStacks sts = intercalate "\n" (map show sts)
