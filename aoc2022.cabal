@@ -67,7 +67,8 @@ library
       Day6.Day6
       Day7.Day7
       Day7.EDSL
-      Day7.Evaluator
+      Day7.Parser
+      Day7.TreeBuilder
       Day8.Day8
       Day9.Day9
       SolutionsCollector
