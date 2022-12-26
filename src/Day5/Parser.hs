@@ -6,8 +6,8 @@ import Data.Char (isLetter)
 
 import Day5.EDSL
 
-import Text.Parsec.String
-import Text.Parsec.Language
+import Text.Parsec.String ( Parser )
+import Text.Parsec.Language ( emptyDef )
 import qualified Text.Parsec.Token as Token
 import Text.Parsec ( sepBy1, parse, char )
 
