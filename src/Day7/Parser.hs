@@ -1,4 +1,4 @@
-module Day7.Parser (parseFile) where
+module Day7.Parser ( parseFile ) where
 
 
 import Text.Parsec.Language ( emptyDef )
@@ -7,10 +7,10 @@ import Text.Parsec.String (Parser)
 import Day7.EDSL ( Listing(..), Command(..) )
 
 import qualified Text.Parsec.Token as Token
-import Text.Parsec ( many, space, lower, sepBy1, try, satisfy, spaces, parse )
+import Text.Parsec ( many, lower, try, satisfy, parse, oneOf )
 import Control.Applicative ((<|>))
-import Text.Parsec.Char (char)
 import Data.Char (isLower)
+import Text.Parsec.Combinator (many1)
 
 
 {- | Language definition for this day's input
@@ -18,7 +18,8 @@ import Data.Char (isLower)
 
 -}
 languageDef = emptyDef {
-    Token.reservedNames = [
+    Token.opLetter = oneOf "$"
+    , Token.reservedNames = [
         "cd"
         , "ls"
         , "dir"
@@ -51,44 +52,45 @@ identifier = Token.identifier lexer
 file :: Parser Listing
 file = do
     sz <- int
-    _ <- space
     File sz <$> identifier
 
 
+-- | Parse a directory listing (on a single line as @dir {folderName}@)
 dir :: Parser Listing
 dir = do
     reserved "dir"
     Folder <$> many lower
 
 
-listing :: Parser Listing
-listing = file <|> dir
-
-
+-- | Parse a listing of a directory
 ls :: Parser Command
 ls = do
     reserved "ls"
-    -- TODO Does this work?
-    List <$> sepBy1 (try listing) (char '\n')
+    List <$> many1 (try (file <|> dir))
 
 
+-- | Parse a directory change
+-- Can be entering a named folder, moving up one folder (denoted by @..@) or the root folder (denoted by @/@)
 cd :: Parser Command
 cd = do
     reserved "cd"
-    Change <$> (many lower <|> symbol ".." <|> symbol "/")
+    Change <$> (symbol ".." <|> symbol "/" <|> many lower)
 
 
+-- | Parse a single command, starting with a dollar and then either a cd or ls
 command :: Parser Command
 command = do
     dollar
     ls <|> cd
 
 
+-- | Parse all commands and put them in a list
 commands :: Parser [Command]
 commands = do
-    sepBy1 command spaces
+    many1 command
 
 
+-- | Wrapper around the parser, which will always succeed with the result or crash the program with an error
 parseFile :: String -> [Command]
 parseFile str = do
     let res = parse commands "" str
