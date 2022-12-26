@@ -1,4 +1,7 @@
-module Day7.TreeBuilder (buildTree) where
+module Day7.TreeBuilder (
+    buildTree
+    , Tree(..)
+    ) where
 
 
 import Day7.EDSL (Listing(..), Command(..))
@@ -23,19 +26,20 @@ sizeOfUnit (Leaf _ s) = s
 sizeOfUnit (Node _ cs) = sum $ map sizeOfUnit cs
 
 
--- traverseTree :: [String] -> Tree -> Maybe Tree
--- traverseTree _ (Leaf _ _) = Nothing
--- traverseTree [n] t@(Node fn _) | n == fn = Just t
---     | otherwise = Nothing
--- traverseTree [] _ = Nothing
--- traverseTree (n:next) (Node fn cs) | n == fn = Just res
---     | otherwise = Nothing
---     where
-        
+traverseTree :: [String] -> Tree -> Tree
+traverseTree [] _ = error "Selection invalid!"
+traverseTree (x:xs) t | x == "/" = foldr enterFolder t xs
+    | otherwise = error "Selection not starting at root!"
 
 
--- findNode :: [String] -> Tree -> Maybe Tree
--- findNode (n:next) (Node fn cs) | fn == n = Just res
---     | otherwise = Nothing
---     where
---         res = head $ filter (\(Node a _) -> a == nextname) cs
+enterFolder :: String -> Tree -> Tree
+enterFolder _ (Leaf _ _) = error "Current selection is a file!"
+enterFolder str (Node _ cs) = res
+    where
+        res = head $ filter (\f -> getFolderName f == str) cs
+
+
+-- | Get the name of a folder, or return an empty string if the given tree is a file
+getFolderName :: Tree -> String
+getFolderName (Node name _) = name
+getFolderName (Leaf _ _) = ""
