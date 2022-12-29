@@ -17,12 +17,14 @@ import Control.Applicative ((<|>))
 import Data.Char (isLower)
 import Text.Parsec.Combinator (many1)
 import Text.Parsec.Char (spaces)
+import qualified Data.Functor.Identity
 
 
 {- | Language definition for this day's input
 @identifier@ is used to identify filenames for ease of use
 
 -}
+languageDef :: Token.GenLanguageDef String u Data.Functor.Identity.Identity
 languageDef = emptyDef {
     Token.opLetter = oneOf "$"
     , Token.reservedNames = [
@@ -38,6 +40,7 @@ languageDef = emptyDef {
 }
 
 
+lexer :: Token.GenTokenParser String u Data.Functor.Identity.Identity
 lexer = Token.makeTokenParser languageDef
 
 
