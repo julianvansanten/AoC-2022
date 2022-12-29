@@ -51,10 +51,19 @@ library
       Day28.Day28
       Day29.Day29
       Day3.Day3
+      Day3.Solution1
+      Day3.Solution2
       Day30.Day30
       Day31.Day31
       Day4.Day4
+      Day4.EDSL
+      Day4.Parser
+      Day4.Solution1
+      Day4.Solution2
+      Day5.CrateLogic
       Day5.Day5
+      Day5.EDSL
+      Day5.Parser
       Day6.Day6
       Day7.Day7
       Day8.Day8
@@ -89,13 +98,46 @@ test-suite aoc2022-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      Day1.Day1Spec
+      Day10.Day10Spec
+      Day11.Day11Spec
+      Day12.Day12Spec
+      Day13.Day13Spec
+      Day14.Day14Spec
+      Day15.Day15Spec
+      Day16.Day16Spec
+      Day17.Day17Spec
+      Day18.Day18Spec
+      Day19.Day19Spec
+      Day2.Day2Spec
+      Day20.Day20Spec
+      Day21.Day21Spec
+      Day22.Day22Spec
+      Day23.Day23Spec
+      Day24.Day24Spec
+      Day25.Day25Spec
+      Day26.Day26Spec
+      Day27.Day27Spec
+      Day28.Day28Spec
+      Day29.Day29Spec
+      Day3.Day3Spec
+      Day30.Day30Spec
+      Day31.Day31Spec
+      Day4.Day4Spec
+      Day5.Day5Spec
+      Day6.Day6Spec
+      Day7.Day7Spec
+      Day8.Day8Spec
+      Day9.Day9Spec
       Paths_aoc2022
   hs-source-dirs:
       test
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      aoc2022
+      QuickCheck
+    , aoc2022
     , base >=4.7 && <5
+    , hspec
     , parsec
     , split >=0.2.3.5
   default-language: Haskell2010
