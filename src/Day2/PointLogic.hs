@@ -33,6 +33,7 @@ toGame1 (Game2 o r) | r == Draw = Game1 o o
         | o == Rock = if r == Loss then Game1 o Scissors else Game1 o Paper
         | o == Paper = if r == Loss then Game1 o Rock else Game1 o Scissors
         | o == Scissors = if r == Loss then Game1 o Paper else Game1 o Rock
+        | otherwise = error "Invalid game state!"
 
 
 
@@ -42,6 +43,7 @@ calculateGame1Result (Game1 opponent me) | opponent == me = 3
                                     | opponent == Rock = if me == Paper then 6 else 0
                                     | opponent == Paper = if me == Scissors then 6 else 0
                                     | opponent == Scissors = if me == Rock then 6 else 0
+                                    | otherwise = error "Invalid game state!"
 
 
 -- | Calculate the points gained from the chosen move
