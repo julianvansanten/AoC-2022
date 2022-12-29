@@ -10,6 +10,8 @@ import Text.Parsec.String ( Parser )
 import Text.Parsec.Language ( emptyDef )
 import qualified Text.Parsec.Token as Token
 import Text.Parsec ( sepBy1, parse, char )
+import qualified Data.Functor.Identity
+import qualified Text.Parsec.Prim
 
 
 -- | Parse the stacks
@@ -22,6 +24,7 @@ convert :: [String] -> [Stack]
 convert = map (Stack . map Crate)
 
 
+languageDef :: Token.GenLanguageDef String u Data.Functor.Identity.Identity
 languageDef = emptyDef {
     Token.reservedNames = [
         "move",
@@ -30,11 +33,14 @@ languageDef = emptyDef {
     ]
 }
 
+lexer :: Token.GenTokenParser String u Data.Functor.Identity.Identity
 lexer = Token.makeTokenParser languageDef
 
 
+int :: Text.Parsec.Prim.ParsecT String u Data.Functor.Identity.Identity Int
 int = fromIntegral <$> Token.integer lexer
 
+reserved :: String -> Text.Parsec.Prim.ParsecT String u Data.Functor.Identity.Identity ()
 reserved = Token.reserved lexer
 
 
