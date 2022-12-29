@@ -72,6 +72,8 @@ library
       Day7.TreeBuilder
       Day8.Day8
       Day9.Day9
+      Day9.EDSL
+      Day9.Parser
       SolutionsCollector
   other-modules:
       Paths_aoc2022
