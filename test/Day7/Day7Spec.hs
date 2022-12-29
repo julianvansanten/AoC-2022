@@ -3,7 +3,6 @@ module Day7.Day7Spec where
 
 import Test.Hspec ( Spec, describe, it, shouldBe )
 
-import Day7.EDSL ( Command(..), Listing(..) )
 import Day7.Parser (parseFile)
 import Day7.TreeBuilder
 import Day7.Evaluator
@@ -16,14 +15,15 @@ spec = do
 
 
 test1 :: Spec
-test1 = describe "Day7.Parser.parseFile" $ do
-            it "Should result in a list of Commands for correct input" $ do 
-                calculateSum (evalTree (buildTree (parseFile input))) `shouldBe` sb
+test1 = describe "Day7.Evaluator.calculateSum" $ do
+            it "Should result in the correct sum for the given example" $ do 
+                (calculateSum . evalTree . buildTree . parseFile) input `shouldBe` 95437
 
 
 test2 :: Spec
-test2 = describe "solve2" $ do
-    it "no test for day 7 implemented yet!" True
+test2 = describe "Day7.Evaluator.requiredSpace" $ do
+    it "Should result in the correct folder size for the given example" $ do
+        (findMin . evalTree . buildTree . parseFile) input `shouldBe` 24933642
 
 
 input :: String
@@ -50,6 +50,3 @@ input = "$ cd /\n" ++
     "8033020 d.log\n" ++
     "5626152 d.ext\n" ++
     "7214296 k"
-
-sb :: Int
-sb = 95437
