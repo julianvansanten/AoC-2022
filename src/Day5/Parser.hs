@@ -9,9 +9,10 @@ import Day5.EDSL
 import Text.Parsec.String ( Parser )
 import Text.Parsec.Language ( emptyDef )
 import qualified Text.Parsec.Token as Token
-import Text.Parsec ( sepBy1, parse, char )
+import Text.Parsec ( parse )
 import qualified Data.Functor.Identity
 import qualified Text.Parsec.Prim
+import Text.Parsec.Combinator (many1)
 
 
 -- | Parse the stacks
@@ -55,12 +56,12 @@ move = do
 
 
 moves :: Parser [Move]
-moves = sepBy1 move (char ',')
+moves = many1 move
 
 
 -- | Filter all strings that do not contain the keyword "move"
 filterMoves :: String -> String
-filterMoves = intercalate "," . filter (isInfixOf "move") . lines
+filterMoves = intercalate "\n" . filter (isInfixOf "move") . lines
 
 
 -- | Run the parser
