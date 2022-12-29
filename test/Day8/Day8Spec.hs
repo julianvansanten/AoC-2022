@@ -16,8 +16,9 @@ test1 = describe "Day8.Day8.solve1" $ do
         fst getDaySolutions input `shouldBe` "21"
 
 test2 :: Spec
-test2 = describe "solve2" $ do
-    it "no test for day 8 implemented yet!" True
+test2 = describe "Day8.Day8.solve2" $ do
+    it "should give the correct scenic score for the given example" $ do
+        snd getDaySolutions input `shouldBe` "8"
 
 
 input :: String
