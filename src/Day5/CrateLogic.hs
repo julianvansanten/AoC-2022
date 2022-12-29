@@ -1,4 +1,4 @@
-{-# OPTIONS_GHC -Wincomplete-uni-patterns #-}
+{-# OPTIONS_GHC -Wno-incomplete-uni-patterns #-}
 
 module Day5.CrateLogic (
     Stack(..),
