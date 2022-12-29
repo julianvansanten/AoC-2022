@@ -5,6 +5,8 @@ import Test.Hspec ( Spec, describe, it, shouldBe )
 
 import Day7.EDSL ( Command(..), Listing(..) )
 import Day7.Parser (parseFile)
+import Day7.TreeBuilder
+import Day7.Evaluator
 
 
 spec :: Spec
@@ -16,7 +18,7 @@ spec = do
 test1 :: Spec
 test1 = describe "Day7.Parser.parseFile" $ do
             it "Should result in a list of Commands for correct input" $ do 
-                parseFile input `shouldBe` sb
+                calculateSum (evalTree (buildTree (parseFile input))) `shouldBe` sb
 
 
 test2 :: Spec
@@ -25,7 +27,29 @@ test2 = describe "solve2" $ do
 
 
 input :: String
-input = "$ cd /\n$ cd ..\n$ ls\ndir test\n500 test.fil\ndir another"
+input = "$ cd /\n" ++
+    "$ ls\n" ++
+    "dir a\n" ++
+    "14848514 b.txt\n" ++
+    "8504156 c.dat\n" ++
+    "dir d\n" ++
+    "$ cd a\n" ++
+    "$ ls\n" ++
+    "dir e\n" ++
+    "29116 f\n" ++
+    "2557 g\n" ++
+    "62596 h.lst\n" ++
+    "$ cd e\n" ++
+    "$ ls\n" ++
+    "584 i\n" ++
+    "$ cd ..\n" ++
+    "$ cd ..\n" ++
+    "$ cd d\n" ++
+    "$ ls\n" ++
+    "4060174 j\n" ++
+    "8033020 d.log\n" ++
+    "5626152 d.ext\n" ++
+    "7214296 k"
 
-sb :: [Command]
-sb = [Change "/", Change "..", List [Folder "test", File 500 "test.fil", Folder "another"]]
+sb :: Int
+sb = 95437

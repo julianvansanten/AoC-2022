@@ -7,10 +7,16 @@ import Text.Parsec.String (Parser)
 import Day7.EDSL ( Listing(..), Command(..) )
 
 import qualified Text.Parsec.Token as Token
-import Text.Parsec ( many, lower, try, satisfy, parse, oneOf )
+import Text.Parsec
+    ( lower,
+      try,
+      satisfy,
+      parse,
+      oneOf )
 import Control.Applicative ((<|>))
 import Data.Char (isLower)
 import Text.Parsec.Combinator (many1)
+import Text.Parsec.Char (spaces)
 
 
 {- | Language definition for this day's input
@@ -46,6 +52,9 @@ dollar = Token.reservedOp lexer "$"
 identifier :: Parser String
 identifier = Token.identifier lexer
 
+folderName :: Parser String
+folderName = many1 lower <* spaces
+
 
 
 -- | Parse a file listing (on a single line as @{fileSize} {filename}.{ext}@)
@@ -59,14 +68,14 @@ file = do
 dir :: Parser Listing
 dir = do
     reserved "dir"
-    Folder <$> many lower
+    Folder <$> folderName
 
 
 -- | Parse a listing of a directory
 ls :: Parser Command
 ls = do
     reserved "ls"
-    List <$> many1 (try (file <|> dir))
+    List <$> many1 (try file <|> dir)
 
 
 -- | Parse a directory change
@@ -74,7 +83,7 @@ ls = do
 cd :: Parser Command
 cd = do
     reserved "cd"
-    Change <$> (symbol ".." <|> symbol "/" <|> many lower)
+    Change <$> (symbol ".." <|> symbol "/" <|> folderName)
 
 
 -- | Parse a single command, starting with a dollar and then either a cd or ls
