@@ -6,10 +6,12 @@ module Day9.EDSL
     where
 
 
+-- | A direction can be up, down, left or right
 data Direction = RUp | RDown | RLeft | RRight
     deriving (Eq)
 
 
+-- | A move consists of a direction and the amount of steps taken
 data Move = Move Direction Int
     deriving (Eq, Show)
 

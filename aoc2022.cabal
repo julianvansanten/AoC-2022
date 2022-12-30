@@ -74,6 +74,8 @@ library
       Day9.Day9
       Day9.EDSL
       Day9.Parser
+      Day9.Rope
+      Day9.RopePhysics
       SolutionsCollector
   other-modules:
       Paths_aoc2022
