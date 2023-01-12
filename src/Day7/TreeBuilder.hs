@@ -16,7 +16,6 @@ data Tree = Node String Int [Tree] | Leaf String Int
 {- | Build a tree from a list of commands
     Utilizes the list of commands to traverse and fill the tree
 -}
--- TODO implement
 buildTree :: [Command] -> Tree
 buildTree cs = buildTree' [] cs $ Node "/" (-1) []
 
@@ -49,7 +48,6 @@ applyChange loc (Change fol) | fol == ".." = let x = init loc in if null x then 
 
 -- | Add the contents of a listing at a given location to a given tree
 addListing :: [String] -> Command -> Tree -> Tree
--- TODO finish implementation
 addListing _ (Change _) t = t
 addListing [] _ _ = error "Invalid folder!"
 addListing [n] (List ls) (Node m s cs) | n == m = Node m s (cs ++ map convert ls)
@@ -59,5 +57,4 @@ addListing (x:y:xs) list (Node m s cs) | x /= m = error $ "Folder " ++ x ++ " do
     where
         change = head $ filter (\f -> getFolderName f == y) cs
         others = filter (\f -> getFolderName f /= y) cs
--- TODO is this reachable? Use `trace` if so
 addListing _ _ _ = error "Something went wrong!"
