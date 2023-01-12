@@ -3,6 +3,7 @@ module Day9.RopePhysics (
     , doScanMoves
     , countTailPositions
     , grabTail
+    , tailPath
 ) where
 
 import Day9.Rope ( Rope(..) )
@@ -11,9 +12,10 @@ import Data.List (nub)
 
 
 -- | Calculate the total length of the path the tail took
-{-# DEPRECATED tailPath "Function does not account for unique positions" #-}
-tailPath :: [(Int, Int)] -> Int
-tailPath ts = sum $ zipWith (\(x,y) (a,b) -> abs (a-x) + abs (b-y)) (tail ts) (init ts)
+tailPath :: (Int, Int) -> (Int, Int) -> [(Int, Int)]
+tailPath (x, y) (a, b) | a == x && y == b = [(a, b)]
+        | abs (a-x) == max (abs (a-x)) (abs (b-y)) = [(i, b) | i <- [min x a..max x a - 1]]
+        | otherwise = [(a, i) | i <- [min y b..max y b - 1]]
 
 
 -- | Count the unique tail positions
