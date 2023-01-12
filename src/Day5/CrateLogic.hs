@@ -43,7 +43,6 @@ addToStack cs (Stack ss) = Stack $ ss ++ cs
 replaceStack :: Int -> Stack -> [Stack] -> [Stack]
 replaceStack i st oldStack = f ++ st : s
     where
-        -- TODO find out if this is a bad thing
         (f, _:s) = splitAt i oldStack
 
 
